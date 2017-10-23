@@ -1,0 +1,10 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${HOME}/Works/Development/Projects/Java/microservices-using-spring-config
