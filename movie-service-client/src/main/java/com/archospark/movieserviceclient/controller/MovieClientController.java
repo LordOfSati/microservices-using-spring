@@ -1,5 +1,6 @@
 package com.archospark.movieserviceclient.controller;
 
+import com.archospark.movieserviceclient.client.MovieClient;
 import com.archospark.movieserviceclient.model.Movie;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +20,18 @@ import java.util.List;
 public class MovieClientController {
 
     private RestTemplate restTemplate;
+    private MovieClient movieClient;
 
     @Autowired
-    public MovieClientController(RestTemplate restTemplate) {
+    public MovieClientController(RestTemplate restTemplate, MovieClient movieClient) {
         this.restTemplate = restTemplate;
+        this.movieClient = movieClient;
     }
 
-    @GetMapping(value = "/movies")
+    @GetMapping(value="/movies")
     @HystrixCommand(fallbackMethod = "getMoviesFallback")
     public List<Movie> getMovies() {
-        final String serviceUrl = "http://movie-service/movies";
-        ParameterizedTypeReference<List<Movie>> parameterizedType = new
-                ParameterizedTypeReference<List<Movie>>() {};
-        ResponseEntity<List<Movie>> response = restTemplate.exchange(serviceUrl, HttpMethod.GET, null,
-                parameterizedType);
-        return response.getBody();
+        return movieClient.getMovies();
     }
 
     public List<Movie> getMoviesFallback() {
