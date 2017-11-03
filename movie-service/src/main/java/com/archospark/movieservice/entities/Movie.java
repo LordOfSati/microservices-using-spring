@@ -2,6 +2,7 @@ package com.archospark.movieservice.entities;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection="movies")
 public class Movie {
@@ -10,8 +11,10 @@ public class Movie {
     private Long id;
     private String name;
     private String description;
+    @Field(value="year")
     private Integer releaseYear;
     private Integer length;
+    private String[] genre;
 
     public Movie() {
     }
@@ -61,6 +64,14 @@ public class Movie {
 
     public void setLength(Integer length) {
         this.length = length;
+    }
+
+    public String[] getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String[] genre) {
+        this.genre = genre;
     }
 
     @Override
