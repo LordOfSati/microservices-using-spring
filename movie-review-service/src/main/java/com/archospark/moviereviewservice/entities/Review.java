@@ -14,12 +14,6 @@ public class Review {
 
     }
 
-    private Review(Long id, Long movie, String review) {
-        this.id = id;
-        this.movie = movie;
-        this.review = review;
-    }
-
     public Long getId() {
         return id;
     }
