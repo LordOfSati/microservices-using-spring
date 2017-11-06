@@ -1,12 +1,15 @@
 package com.archospark.movieserviceclient.model;
 
+import java.util.Collections;
+import java.util.List;
+
 public class Movie {
     private Long id;
     private String name;
     private String description;
     private Integer releaseYear;
     private Integer length;
-
+    private List<Review> reviews = Collections.emptyList();
     public Movie() {
     }
 
@@ -55,6 +58,14 @@ public class Movie {
 
     public void setLength(Integer length) {
         this.length = length;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     @Override

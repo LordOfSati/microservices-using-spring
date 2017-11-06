@@ -11,18 +11,20 @@ import com.archospark.movieserviceclient.model.Movie;
 
 @FeignClient(name = "movie-service")
 public interface MovieClient {
+
     @GetMapping(value = "/movies", produces = MediaType.APPLICATION_JSON_VALUE)
     List<Movie> getMovies();
 
     @GetMapping(value = "/movie/{movieId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    Movie getMovieById(@PathVariable final Long movieId);
+    Movie getMovieById(@PathVariable("movieId") final Long movieId);
 
     @GetMapping(value = "/movies/names", produces = MediaType.APPLICATION_JSON_VALUE)
     List<String> getMovieNames();
 
     @GetMapping(value = "/movies/year/{year}", produces = MediaType.APPLICATION_JSON_VALUE)
-    List<Movie> getMoviesByYear(@PathVariable final Integer year);
+    List<Movie> getMoviesByYear(@PathVariable("year") final Integer year);
 
     @GetMapping(value = "/movies/genre/{genre}", produces = MediaType.APPLICATION_JSON_VALUE)
-    List<Movie> getMoviesByGenre(@PathVariable final String genre);
+    List<Movie> getMoviesByGenre(@PathVariable("genre") final String genre);
+
 }
