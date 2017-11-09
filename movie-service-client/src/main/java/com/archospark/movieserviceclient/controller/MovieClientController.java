@@ -35,33 +35,61 @@ public class MovieClientController {
     }
 
     @GetMapping(value = "/movie/{movieId}")
+    @HystrixCommand(fallbackMethod = "getMovieByIdFallback")
     public Movie getMovieById(@PathVariable final Long movieId) {
         Movie movie = movieClient.getMovieById(movieId);
         if (null != movie) {
-            List<Review> reviews = movieReviewClient.getMovieReviews(movieId);
-            movie.setReviews(reviews);
+            movie.setReviews(getMovieReviews(movieId));
         }
         return movie;
     }
 
+    @HystrixCommand(fallbackMethod = "getMovieReviewsFallback")
+    public List<Review> getMovieReviews(final Long movieId) {
+        return movieReviewClient.getMovieReviews(movieId);
+    }
+
     @GetMapping(value = "/movie/genre/{genre}")
+    @HystrixCommand(fallbackMethod = "getMoviesByGenreFallback")
     public List<Movie> getMoviesByGenre(@PathVariable final String genre) {
         return movieClient.getMoviesByGenre(genre);
     }
 
     @GetMapping(value = "/movie/year/{year}")
-    public List<Movie> getMoviesByGenre(@PathVariable final Integer year) {
+    @HystrixCommand(fallbackMethod = "getMoviesByYearFallback")
+    public List<Movie> getMoviesByYear(@PathVariable final Integer year) {
         return movieClient.getMoviesByYear(year);
     }
 
     @GetMapping(value = "/movies/names")
+    @HystrixCommand(fallbackMethod = "getMovieNamesFallback")
     public List<String> getMovieNames() {
         return movieClient.getMovieNames();
     }
 
-    /* fallback methods */
+    /* Fallback methods */
 
     public List<Movie> getMoviesFallback() {
+        return Collections.emptyList();
+    }
+
+    public Movie getMovieByIdFallback(final Long movieId) {
+        return null;
+    }
+
+    public List<Review> getMovieReviewsFallback(final Long movieId) {
+        return Collections.emptyList();
+    }
+
+    public List<Movie> getMoviesByGenreFallback(final String genre) {
+        return Collections.emptyList();
+    }
+
+    public List<Movie> getMoviesByYearFallback(final Integer year) {
+        return Collections.emptyList();
+    }
+
+    public List<String> getMovieNamesFallback() {
         return Collections.emptyList();
     }
 }
